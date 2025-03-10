@@ -28,15 +28,15 @@ export default function FullCalander() {
 
     const [currentView, setCurrentView] = useState("dayGridMonth");
     const [titleFormat, setTitleFormat] = useState<any>({ month: "long", year: "numeric" });
-    const [tableHeaderFormat, setTableHeaderFormat] = useState<any>({ weekday: "long" });
+    // const [tableHeaderFormat, setTableHeaderFormat] = useState<any>({ weekday: "long" });
     const [todayLabel, setTodayLabel] = useState(
         new Date().toLocaleDateString("en-US", { day: "numeric" })
     );
 
 
     const fetchData = (data?: any) => {
-        let today = new Date()
-        let res: any = fetchFilteredEvents({ ...data } || { year: today.getFullYear(), month: today.getMonth() })
+        const today = new Date()
+        fetchFilteredEvents(data || { year: today.getFullYear(), month: today.getMonth() })
             .then((res: any) => {
                 if (res?.length) {
                     setEvents([...res])
@@ -48,7 +48,7 @@ export default function FullCalander() {
     }
 
     const groupedEvents = useMemo(() => {
-        let res = groupEvents(events)
+        const res = groupEvents(events)
         return res
     }, [events]);
 
@@ -81,18 +81,18 @@ export default function FullCalander() {
 
     useEffect(() => {
         if (currentView == "timeGridWeek" && calendarApi) {
-            const start = calendarApi.view.currentStart;
+            // const start = calendarApi.view.currentStart;
             const end = calendarApi.view.currentEnd;
 
-            const startDate = new Date(start);
+            // const startDate = new Date(start);
             const endDate = new Date(end);
             endDate.setDate(endDate.getDate() - 1);
 
-            const formattedTitle = `${startDate.getDate()} ${startDate.toLocaleDateString("en-US", {
-                month: "long",
-            })} to ${endDate.getDate()} ${endDate.toLocaleDateString("en-US", {
-                month: "long",
-            })}, ${endDate.getFullYear()}`;
+            // const formattedTitle = `${startDate.getDate()} ${startDate.toLocaleDateString("en-US", {
+            //     month: "long",
+            // })} to ${endDate.getDate()} ${endDate.toLocaleDateString("en-US", {
+            //     month: "long",
+            // })}, ${endDate.getFullYear()}`;
 
 
             setTitleFormat({
@@ -145,15 +145,15 @@ export default function FullCalander() {
         switch (currentView) {
             case "multiMonthYear":
                 setTitleFormat({ year: "numeric" });
-                setTableHeaderFormat({ weekday: 'long' })
+                // setTableHeaderFormat({ weekday: 'long' })
                 break;
             case "dayGridMonth":
                 setTitleFormat({ year: "numeric", month: "long" });
-                setTableHeaderFormat({ weekday: 'long', day: 'numeric', month: "long" })
+                // setTableHeaderFormat({ weekday: 'long', day: 'numeric', month: "long" })
                 break;
             case "timeGridWeek":
                 setTitleFormat({ month: "short", day: "numeric", year: "numeric" });
-                setTableHeaderFormat({ weekday: 'long' })
+                // setTableHeaderFormat({ weekday: 'long' })
                 break;
             case "timeGridDay":
                 setTitleFormat({ weekday: "long", month: "short", day: "numeric", year: "numeric" });
@@ -176,7 +176,7 @@ export default function FullCalander() {
     };
 
     const seteventData = (info: any) => {
-        let eventDate = info.view?.getCurrentData().currentDate
+        const eventDate = info.view?.getCurrentData().currentDate
         if (info.view.type == 'multiMonthYear') {
             fetchData({ year: eventDate.getFullYear() })
 
@@ -226,7 +226,7 @@ export default function FullCalander() {
     return (
         <div className="p-4">
             <div className="fbcSB mb-3">
-                <p className="text-xl mb-4">Your Todo's</p>
+                <p className="text-xl mb-4">Your Todo&apos;s</p>
                 <button className="buttonPrime">+ Create Schedule</button>
             </div>
 
@@ -237,7 +237,7 @@ export default function FullCalander() {
                 events={formattedEvents}
                 datesSet={seteventData}
                 eventContent={(eventInfo) => {
-                    let parseData = JSON.parse(eventInfo.event._def.extendedProps.desc);
+                    const parseData = JSON.parse(eventInfo.event._def.extendedProps.desc);
                     return <EventCard eventInfo={parseData} wholeData={events} />;
                 }}
                 customButtons={{
