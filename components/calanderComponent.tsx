@@ -35,7 +35,6 @@ export default function FullCalander() {
 
 
     const fetchData = (data?: any) => {
-        const today = new Date()
         fetchFilteredEvents(data)
             .then((res: any) => {
                 if (res?.length) {
@@ -75,7 +74,7 @@ export default function FullCalander() {
     }
 
     useEffect(() => {
-        let eventDate = new Date()
+        const eventDate = new Date()
         replaceClassName();
         fetchData({
             year: eventDate.getFullYear(),
