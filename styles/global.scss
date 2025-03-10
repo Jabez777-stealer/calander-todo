@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+$primary-color: #0070f3;
+$light-border:#e1e1e1;
+
+$std-boxshaddow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+
+*{
+    font-family: initial;
+}
+
+.smallFontPaddX{
+    padding: 3px 0;
+    font-size: 12px;
+}
+
+.verticleSep{
+    width: 1px;
+     margin-left: 14px;
+     margin-right: 14px;
+     background: $light-border;
+     height: 16px, 
+}
+
+.horSepertr{
+    height: 1;
+     background: $light-border ;
+     width: 100% ;
+    left:0
+}
+
+.scrollCont {
+    max-height: 230px;
+    overflow-y: scroll;
+}
+
+.fc-button-primary {
+    transition: ease-in 0.25s background-color ;
+    &:hover{
+        color: #fff;
+    }
+}
+
+button.fc-todayDate-button.fc-button.fc-button-primary {
+    border: none !important;
+    box-shadow: $std-boxshaddow;   
+}
+
+.buttonPrime{
+    padding: 8 12;
+    color: $primary-color;
+    cursor: pointer;
+    background-color:#fff;
+    transition: ease-in 0.25s background-color ;
+    border-radius: 4;
+    &:hover{
+        background-color: $primary-color;
+        color: #fff;
+    }
+}
+
+  *::-webkit-scrollbar {
+        width: 8px; 
+    }
+*::-webkit-scrollbar-track {
+    background: #fff; /* Track background */
+    border-radius: 0px; /* Rounded corners */
+}
+*::-webkit-scrollbar-thumb {
+    background: $primary-color; /* Scrollbar color */
+    border-radius: 10px; /* Rounded edges */
+    border: 2px solid #ffffff; /* Adds padding effect */
+}
+
+
+$primary-color: #0070f3;
+
+.fc th {
+    padding: 0px;
+    vertical-align:middle;
+    font-size: 16px;
+}
+
+.fc {
+    .fc-button-group:last-child {
+  
+      .fc-button.fc-button-primary {
+        border: none;
+        border-radius: 0%;
+  
+        &:hover {
+            border-radius: 0%;
+          background-color: #fff !important;
+          color: $primary-color;
+          border-bottom: 1px solid $primary-color;
+        }
+        &:not(:disabled).fc-button-active{
+                background-color: #fff !important;
+                border-color: black !important;
+                color: $primary-color;
+                box-shadow: none !important;
+                border-bottom: 1px solid $primary-color;
+                &:hover {
+                    border-radius: 0%;
+                  background-color: #fff !important;
+                  color: $primary-color;
+                  border-bottom: 1px solid $primary-color;
+                }
+        }
+      }
+    }
+  }
+
+  td.fc-timegrid-slot.fc-timegrid-slot-label.fc-scrollgrid-shrink {
+    width: 6rem;
+    justify-content: center;
+}
+
+.fc-v-event {
+    background-color: #fff !important;
+    border: none !important;
+    display: block;
+}
+
+.fs12{
+    font-size: 12px;
+}
+
+.eventCardCont {
+    background: rgb(254, 254, 254);
+    height: 'auto';
+    width: 98%;
+    position: relative; 
+    padding-left: 18px;
+    min-width: 180px;
+    max-width: 230px;
+    box-shadow: $std-boxshaddow;
+    z-index: 444356 !important;
+    &:hover{
+        z-index: 544356 !important;
+    }
+    &::before {
+        content: ""; /* Required for pseudo-elements */
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 13px;
+        background-color: var(--themePrimary);
+        height: 100%;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+
+      }
+      .childrenCount{
+        position: absolute;
+        right: -7px;
+        top:-7px;
+        background: #fad059;
+        height: 20px;
+        width: 20px;
+        text-align: center;
+        border-radius: 50%;
+
+      }
+  }
+
+  
+
+  
