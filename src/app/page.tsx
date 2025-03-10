@@ -1,4 +1,3 @@
-import Image from "next/image";
 import FullCalander from "../../components/calanderComponent";
 
 export default function Home() {

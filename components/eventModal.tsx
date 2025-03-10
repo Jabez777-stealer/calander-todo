@@ -1,6 +1,4 @@
-import { useState } from "react";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // Import default styles
+import "tippy.js/dist/tippy.css"; 
 import { AiFillCloseCircle, AiOutlineDownload, AiOutlineEye } from "react-icons/ai";
 import Image from "next/image";
 

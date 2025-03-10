@@ -21,7 +21,7 @@ export default function EventCard(props: any) {
         if(modalOpen == false){
             setActivePopup({})
         }
-    },[modalOpen])
+    },[modalOpen,setActivePopup])
 
     const joinMeetingPopup = (data:any)=>{
         setActivePopup({...data})
