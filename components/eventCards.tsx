@@ -33,9 +33,7 @@ export default function EventCard(props: any) {
         setActiveEvent({})
     }
 
-    const filter = data.filter((item: any) => item.start == eventInfo.start && eventInfo.user_det.handled_by.username == item.user_det.handled_by.username && 
-    eventInfo.job_id.jobRequest_Title == item.job_id.jobRequest_Title
-    )
+    const filter = data.filter((item: any) => item.start == eventInfo.start)
 
     return (
         <div className="relative w-full">
@@ -52,9 +50,9 @@ export default function EventCard(props: any) {
                         </div>
                         <div className="scrollCont">
                         {filter
-                            .map((event: any, index: number) => <>
-                                <Event key={`${event.id}${index}gd`} keyId={`${event.id}${index}gd`} onClick={joinMeetingPopup} eventInfo={event} />
-                            </>
+                            .map((event: any, index: number) => <div key={`${event.id}${index}gd`} >
+                                <Event keyId={`${event.id}${index}gd`} onClick={joinMeetingPopup} eventInfo={event} />
+                            </div>
                             )
                         }
                         </div>
