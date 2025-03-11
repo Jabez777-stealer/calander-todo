@@ -61,7 +61,7 @@ export default function DynamicFormikForm() {
           console.log("Form Data:", values);
         }}
       >
-        {({ values }) => (
+        {({ }) => (
           <Form className="space-y-4">
             {formSchema.map((field) => (
               <div key={field.name} className="flex flex-col gap-2">

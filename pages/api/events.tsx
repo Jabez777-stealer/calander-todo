@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-
-const allEvents = require('../../public/data.json');
+import allEvents from '../../public/data.json'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const { year, month, week, day } = req.query; 
