@@ -18,14 +18,14 @@ export default function EventCard(props: any) {
     
     
     useEffect(()=>{
-        if(modalOpen == false){
+        if(props.open == false){
             setActivePopup({})
         }
-    },[modalOpen,setActivePopup])
+    },[props.open,setActivePopup])
 
     const joinMeetingPopup = (data:any)=>{
         setActivePopup({...data})
-        setModalOpen(true)
+        props.openModalFun(true,data)
     }
 
     const closeEventList = ()=>{
@@ -34,6 +34,39 @@ export default function EventCard(props: any) {
     }
 
     const filter = data.filter((item: any) => item.start == eventInfo.start)
+
+    const eventCardContent = (
+        <div
+            style={{ background: activeEvent.id === eventInfo.id ? "#d4effd" : "#fff" }}
+            className="cursor-pointer p-1 rounded-md eventCardCont"
+            onClick={() => {
+                if (filter.length > 1) {
+                    setActiveEvent({ ...eventInfo });
+                    setVisible(!visible);
+                    return;
+                }
+                joinMeetingPopup(eventInfo);
+            }}
+        >
+            <p className="text-black fs12">{eventInfo?.job_id?.jobRequest_Title}</p>
+            <p className="text-black fs12">{eventInfo?.user_det?.handled_by?.username}</p>
+            <p className="text-black fs12">
+                <span className="font-medium">Time:</span>{" "}
+                {new Date(eventInfo?.start).toLocaleString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                })}{" "}
+                -{" "}
+                {new Date(eventInfo?.end).toLocaleString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                })}
+            </p>
+            {filter.length > 1 && <p className="childrenCount">{filter.length}</p>}
+        </div>
+    );
 
     return (
         <div className="relative w-full">
@@ -60,18 +93,24 @@ export default function EventCard(props: any) {
                 }
                 interactive={true}
                 trigger="click"
-                visible={visible}
+                visible={visible && !props.open}
                 onClickOutside={() => closeEventList()}
                 placement="auto"
                 arrow={false}
                 animation="shift-away"
+                appendTo={() => document.body}
+               
             >
                 <div
-                    style={{ background: activeEvent.id == eventInfo.id ? '#d4effd' : '#fff' }}
+                    style={{ background: activeEvent.id == eventInfo.id ? '#d4effd' : '#fff' ,maxWidth: props.currentView == 'multiMonthYear' ? '120px' : '230px' ,minWidth: props.currentView == 'multiMonthYear' ? '100px' : '230px'}}
                     className="cursor-pointer  p-1 rounded-md eventCardCont"
                     onClick={() => {
-                        setActiveEvent({ ...eventInfo })
-                        setVisible(!visible)
+                        if(filter.length > 1){
+                            setActiveEvent({ ...eventInfo })
+                            setVisible(!visible)
+                            return
+                        }
+                        joinMeetingPopup(eventInfo)
                     }}
                 >
                     <p className="text-black fs12">{eventInfo?.job_id?.jobRequest_Title}</p>
@@ -93,9 +132,9 @@ export default function EventCard(props: any) {
                     {filter.length > 1 && <p className="childrenCount">{filter.length}</p>}
                 </div>
             </Tippy>
-            {modalOpen && (
+            {props.open  &&false && (
                 <>
-                  <EventModal eventInfo={eventInfo} setModalOpen={setModalOpen} Gicon={Gicon} />
+                  <EventModal eventInfo={eventInfo} modalOpen={modalOpen} Gicon={Gicon} />
                 </>
             )}
         </div>

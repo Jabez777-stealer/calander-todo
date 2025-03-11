@@ -8,7 +8,9 @@ import multiMonthPlugin from "@fullcalendar/multimonth";
 import EventCard from "./eventCards";
 import { CalendarApi } from "@fullcalendar/core/index.js";
 import { fetchFilteredEvents } from "../apiCalls/fetchapi";
-
+import { Box, Modal } from "@mui/material";
+import EventModal from "./eventModal";
+import Gicon from '../assets/images/gmicon.svg'
 
 
 const groupEvents = (events: any[]) => {
@@ -24,11 +26,11 @@ const groupEvents = (events: any[]) => {
 
 export default function FullCalander() {
     const [events, setEvents] = useState<any[]>([])
+    const [popUpEvent, setPopUpEvent] = useState<any>({})
+    const [open ,setOpen] = useState(false)
     const [calendarApi, setCalendarApi] = useState<CalendarApi | null>(null);
-
     const [currentView, setCurrentView] = useState("dayGridMonth");
     const [titleFormat, setTitleFormat] = useState<any>({ month: "long", year: "numeric" });
-    // const [tableHeaderFormat, setTableHeaderFormat] = useState<any>({ weekday: "long" });
     const [todayLabel, setTodayLabel] = useState(
         new Date().toLocaleDateString("en-US", { day: "numeric" })
     );
@@ -37,9 +39,10 @@ export default function FullCalander() {
     const fetchData = (data?: any) => {
         fetchFilteredEvents(data)
             .then((res: any) => {
+                console.log(data,"received data from the api",res);
+                
                 if (res?.length) {
                     setEvents([...res])
-
                 } else {
                     setEvents([])
                 }
@@ -63,7 +66,6 @@ export default function FullCalander() {
 
     function replaceClassName() {
         const div = document.querySelector("td.fc-timegrid-axis.fc-scrollgrid-shrink");
-
         if (div) {
             div.className = "td fc-day fc-day-sun fc-day-past fc-daygrid-day";
             console.warn("Element found! and changed");
@@ -127,7 +129,6 @@ export default function FullCalander() {
         }
     }, [currentView, calendarApi]);
 
-
     const formattedEvents = groupedEvents.map((event: any) =>
     (
         {
@@ -166,19 +167,24 @@ export default function FullCalander() {
         }
     }, [currentView]);
 
-    const getWeekNumber = (date: any) => {
-        const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-        const firstDayOfMonth = startOfMonth.getDay();
+  const getWeekNumber = (date: Date) => {
 
-        const offset = firstDayOfMonth === 0 ? -6 : 1 - firstDayOfMonth;
-        const startOfWeek: any = new Date(startOfMonth);
-        startOfWeek.setDate(startOfMonth.getDate() + offset);
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const firstDayOfMonth = startOfMonth.getDay();
+    const daysSinceFirstSunday = (7 - firstDayOfMonth) % 7;
 
-        const diffInDays = Math.floor((date - startOfWeek) / (1000 * 60 * 60 * 24));
-        return Math.floor(diffInDays / 7) + 2;
-    };
+    const firstSunday = new Date(startOfMonth);
+    firstSunday.setDate(startOfMonth.getDate() + daysSinceFirstSunday);
+
+    if (date < firstSunday) return 1;
+
+    const diffInDays = Math.floor((date.getTime() - firstSunday.getTime()) / (1000 * 60 * 60 * 24));
+
+    return Math.floor(diffInDays / 7) + 2;
+};
 
     const seteventData = (info: any) => {
+        try{      
         const eventDate = info.view?.getCurrentData().currentDate
         if (info.view.type == 'multiMonthYear') {
             fetchData({ year: eventDate.getFullYear() })
@@ -189,6 +195,7 @@ export default function FullCalander() {
                 month: eventDate.getMonth() + 1,
             })
         } else if (info.view.type == 'timeGridWeek') {
+
             fetchData({
                 year: eventDate.getFullYear(),
                 month: eventDate.getMonth() + 1,
@@ -196,12 +203,16 @@ export default function FullCalander() {
             })
         } else if (info.view.type == 'timeGridDay') {
             fetchData({
-                year: eventDate.getFullYear(),
-                month: eventDate.getMonth() + 1,
-                day: eventDate.getDate()
+                year: info.start.getFullYear(),
+                month: info.start.getMonth() + 1,
+                day: info.start.getDate()
             })
         }
         setCurrentView(info.view.type)
+    } catch (err){
+        console.log("catched the error",err);
+        
+    }
     }
 
     const headerContent = (args: any) => {
@@ -226,6 +237,11 @@ export default function FullCalander() {
         );
     }
 
+    const openModalFun = (val:boolean,evntInfo:any)=>{
+        setPopUpEvent({...evntInfo})
+        setOpen(val)
+    }
+
     return (
         <div className="p-4">
             <div className="fbcSB mb-3">
@@ -241,7 +257,7 @@ export default function FullCalander() {
                 datesSet={seteventData}
                 eventContent={(eventInfo) => {
                     const parseData = JSON.parse(eventInfo.event._def.extendedProps.desc);
-                    return <EventCard eventInfo={parseData} wholeData={events} />;
+                    return <EventCard currentView={currentView} setOpen={setOpen} open={open} eventInfo={parseData} wholeData={events} openModalFun={openModalFun}/>;
                 }}
                 customButtons={{
                     todayDate: {
@@ -260,6 +276,17 @@ export default function FullCalander() {
                 dayHeaderContent={headerContent}
                 dayHeaderClassNames="custom-day-header"
             />
+            <Modal
+                open={open}
+                onClose={()=>setOpen(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{height:'100%'}}>
+                    <EventModal setModalOpen={openModalFun} Gicon={Gicon} eventInfo={ popUpEvent }/>
+                    
+                </Box>
+            </Modal>
         </div>
     );
 }
