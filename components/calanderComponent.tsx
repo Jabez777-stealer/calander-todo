@@ -6,7 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import EventCard from "./eventCards";
-import { CalendarApi, formatRange } from "@fullcalendar/core/index.js";
+import { CalendarApi } from "@fullcalendar/core/index.js";
 import { fetchFilteredEvents } from "../apiCalls/fetchapi";
 import { Box, Modal } from "@mui/material";
 import EventModal from "./eventModal";
@@ -62,25 +62,25 @@ export default function FullCalander() {
         }
     };
 
-    function replaceClassName() {
-        const div = document.querySelector("td.fc-timegrid-axis.fc-scrollgrid-shrink");
-        if (div) {
-            div.className = "td fc-day fc-day-sun fc-day-past fc-daygrid-day";
-            console.warn("Element found! and changed");
+    // function replaceClassName() {
+    //     const div = document.querySelector("td.fc-timegrid-axis.fc-scrollgrid-shrink");
+    //     if (div) {
+    //         div.className = "td fc-day fc-day-sun fc-day-past fc-daygrid-day";
+    //         console.warn("Element found! and changed");
 
-        } else {
-            console.warn("Element not found!");
-        }
-    }
+    //     } else {
+    //         console.warn("Element not found!");
+    //     }
+    // }
 
-    useEffect(() => {
-        const eventDate = new Date()
-        // replaceClassName();
-        // fetchData({
-        //     year: eventDate.getFullYear(),
-        //     month: eventDate.getMonth() + 1,
-        // })
-    }, []);
+    // useEffect(() => {
+    //     // const eventDate = new Date()
+    //     // replaceClassName();
+    //     // fetchData({
+    //     //     year: eventDate.getFullYear(),
+    //     //     month: eventDate.getMonth() + 1,
+    //     // })
+    // }, []);
 
     useEffect(() => {
         if (currentView == "timeGridWeek" && calendarApi) {
@@ -165,21 +165,21 @@ export default function FullCalander() {
         }
     }, [currentView]);
 
-  const getWeekNumber = (date: Date) => {
+//   const getWeekNumber = (date: Date) => {
 
-    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-    const firstDayOfMonth = startOfMonth.getDay();
-    const daysSinceFirstSunday = (7 - firstDayOfMonth) % 7;
+//     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+//     const firstDayOfMonth = startOfMonth.getDay();
+//     const daysSinceFirstSunday = (7 - firstDayOfMonth) % 7;
 
-    const firstSunday = new Date(startOfMonth);
-    firstSunday.setDate(startOfMonth.getDate() + daysSinceFirstSunday);
+//     const firstSunday = new Date(startOfMonth);
+//     firstSunday.setDate(startOfMonth.getDate() + daysSinceFirstSunday);
 
-    if (date < firstSunday) return 1;
+//     if (date < firstSunday) return 1;
 
-    const diffInDays = Math.floor((date.getTime() - firstSunday.getTime()) / (1000 * 60 * 60 * 24));
+//     const diffInDays = Math.floor((date.getTime() - firstSunday.getTime()) / (1000 * 60 * 60 * 24));
 
-    return Math.floor(diffInDays / 7) + 2;
-};
+//     return Math.floor(diffInDays / 7) + 2;
+// };
 
 const formatDate = (dateObj: Date) => {
     const year = dateObj.getFullYear();
@@ -190,10 +190,10 @@ const formatDate = (dateObj: Date) => {
 };
 
     const seteventData = (info: any) => {
-        let edte = info.end;
+        const edte = info.end;
         edte.setDate(info.end.getDate() - 1)
-        let startDte = formatDate(info.start);
-        let endDte = formatDate(edte)
+        const startDte = formatDate(info.start);
+        const endDte = formatDate(edte)
 
         try {
             fetchData({
