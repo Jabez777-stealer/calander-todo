@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import Gicon from '../assets/images/gmicon.svg'
 import { AiFillCloseCircle } from "react-icons/ai";
-import EventModal from "./eventModal";
 import Event from "./event";
 import { useAppContext } from "../context/commonDataContext";
 
@@ -12,20 +10,19 @@ import { useAppContext } from "../context/commonDataContext";
 export default function EventCard(props: any) {
     const data = props.wholeData
     const [visible, setVisible] = useState(false); 
-    const [modalOpen,setModalOpen] = useState(false)
     const eventInfo: any = {...props?.eventInfo}
     const {activeEvent,setActiveEvent,setActivePopup} = useAppContext()
     
     
     useEffect(()=>{
-        if(modalOpen == false){
+        if(props.open == false){
             setActivePopup({})
         }
-    },[modalOpen,setActivePopup])
+    },[props.open,setActivePopup])
 
     const joinMeetingPopup = (data:any)=>{
         setActivePopup({...data})
-        setModalOpen(true)
+        props.openModalFun(true,data)
     }
 
     const closeEventList = ()=>{
@@ -33,9 +30,7 @@ export default function EventCard(props: any) {
         setActiveEvent({})
     }
 
-    const filter = data.filter((item: any) => item.start == eventInfo.start && eventInfo.user_det.handled_by.username == item.user_det.handled_by.username && 
-    eventInfo.job_id.jobRequest_Title == item.job_id.jobRequest_Title
-    )
+    const filter = data.filter((item: any) => item.start == eventInfo.start)
 
     return (
         <div className="relative w-full">
@@ -52,28 +47,34 @@ export default function EventCard(props: any) {
                         </div>
                         <div className="scrollCont">
                         {filter
-                            .map((event: any, index: number) => <>
-                                <Event key={`${event.id}${index}gd`} keyId={`${event.id}${index}gd`} onClick={joinMeetingPopup} eventInfo={event} />
-                            </>
+                            .map((event: any, index: number) => <div key={`${event.id}${index}gd`} >
+                                <Event keyId={`${event.id}${index}gd`} onClick={joinMeetingPopup} eventInfo={event} />
+                            </div>
                             )
                         }
                         </div>
                     </div>
                 }
                 interactive={true}
-                trigger="click"
-                visible={visible}
+                // trigger="click"
+                visible={visible && !props.open}
                 onClickOutside={() => closeEventList()}
                 placement="auto"
                 arrow={false}
                 animation="shift-away"
+                appendTo={() => document.body}
+               
             >
                 <div
-                    style={{ background: activeEvent.id == eventInfo.id ? '#d4effd' : '#fff' }}
+                    style={{ background: activeEvent.id == eventInfo.id ? '#d4effd' : '#fff' ,maxWidth: props.currentView == 'multiMonthYear' ? '120px' : '230px' ,minWidth: props.currentView == 'multiMonthYear' ? '100px' : '230px'}}
                     className="cursor-pointer  p-1 rounded-md eventCardCont"
                     onClick={() => {
-                        setActiveEvent({ ...eventInfo })
-                        setVisible(!visible)
+                        if(filter.length > 1){
+                            setActiveEvent({ ...eventInfo })
+                            setVisible(!visible)
+                            return
+                        }
+                        joinMeetingPopup(eventInfo)
                     }}
                 >
                     <p className="text-black fs12">{eventInfo?.job_id?.jobRequest_Title}</p>
@@ -95,11 +96,11 @@ export default function EventCard(props: any) {
                     {filter.length > 1 && <p className="childrenCount">{filter.length}</p>}
                 </div>
             </Tippy>
-            {modalOpen && (
+            {/* {props.open  &&false && (
                 <>
-                  <EventModal eventInfo={eventInfo} setModalOpen={setModalOpen} Gicon={Gicon} />
+                  <EventModal eventInfo={eventInfo} modalOpen={modalOpen} Gicon={Gicon} />
                 </>
-            )}
+            )} */}
         </div>
     );
 }

@@ -126,6 +126,9 @@ $primary-color: #0070f3;
     font-size: 12px;
 }
 
+
+
+
 .eventCardCont {
     background: rgb(254, 254, 254);
     height: 'auto';
@@ -133,11 +136,12 @@ $primary-color: #0070f3;
     position: relative; 
     padding-left: 18px;
     min-width: 180px;
-    max-width: 230px;
+    max-width: 180;
     box-shadow: $std-boxshaddow;
-    z-index: 444356 !important;
+    // overflow: hidden;
+    // z-index: 444356 !important;
     &:hover{
-        z-index: 544356 !important;
+        // z-index: 544356 !important;
     }
     &::before {
         content: ""; /* Required for pseudo-elements */

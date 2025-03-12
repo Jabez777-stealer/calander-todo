@@ -37,7 +37,7 @@ export default function EventModal({ eventInfo, setModalOpen, Gicon }: any) {
                                     </div>
                                 </div>
                                 <div
-                                    onClick={() => setModalOpen(false)}
+                                    onClick={() => setModalOpen(false,{})}
                                     className="downLoadBtn fbcSB"
                                 >
                                     <p>Aadharcard</p>
@@ -57,7 +57,7 @@ export default function EventModal({ eventInfo, setModalOpen, Gicon }: any) {
                             </div>
                         </div>
                         <div
-                        onClick={() => setModalOpen(false)}
+                        onClick={() => setModalOpen(false,{})}
                          className="closeBtn">
                         <AiFillCloseCircle size={26} color="#1e6dc0" className="text-gray-700 cursor-pointer" />
                         </div>
