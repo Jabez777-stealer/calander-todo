@@ -56,7 +56,7 @@ export default function EventCard(props: any) {
                     </div>
                 }
                 interactive={true}
-                trigger="click"
+                // trigger="click"
                 visible={visible && !props.open}
                 onClickOutside={() => closeEventList()}
                 placement="auto"

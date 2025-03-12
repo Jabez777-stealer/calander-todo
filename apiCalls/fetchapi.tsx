@@ -46,9 +46,8 @@
 
   
 
-export const fetchFilteredEvents = async ({ year, month, week, day }: any) => {
+export const fetchFilteredEvents = async ({ year, month, week, day,fromDate,toDate }: any) => {
     try {
-        // Construct query parameters
         const queryParams = new URLSearchParams();
 
         if (year) queryParams.append("year", year.toString());
@@ -56,8 +55,8 @@ export const fetchFilteredEvents = async ({ year, month, week, day }: any) => {
         if (week) queryParams.append("week", week.toString());
         if (day) queryParams.append("day", day.toString());
 
-        const response = await fetch(`/api/events?${queryParams.toString()}`); // API Call
-        const filteredEvents = await response.json(); // Get response data
+        const response = await fetch(`/api/events?fromDate=${fromDate}&toDate=${toDate}`); 
+        const filteredEvents = await response.json(); 
         return filteredEvents;
     } catch (error) {
         console.error("Error fetching events:", error);

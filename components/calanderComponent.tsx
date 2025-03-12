@@ -6,7 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import EventCard from "./eventCards";
-import { CalendarApi } from "@fullcalendar/core/index.js";
+import { CalendarApi, formatRange } from "@fullcalendar/core/index.js";
 import { fetchFilteredEvents } from "../apiCalls/fetchapi";
 import { Box, Modal } from "@mui/material";
 import EventModal from "./eventModal";
@@ -39,8 +39,6 @@ export default function FullCalander() {
     const fetchData = (data?: any) => {
         fetchFilteredEvents(data)
             .then((res: any) => {
-                console.log(data,"received data from the api",res);
-                
                 if (res?.length) {
                     setEvents([...res])
                 } else {
@@ -77,11 +75,11 @@ export default function FullCalander() {
 
     useEffect(() => {
         const eventDate = new Date()
-        replaceClassName();
-        fetchData({
-            year: eventDate.getFullYear(),
-            month: eventDate.getMonth() + 1,
-        })
+        // replaceClassName();
+        // fetchData({
+        //     year: eventDate.getFullYear(),
+        //     month: eventDate.getMonth() + 1,
+        // })
     }, []);
 
     useEffect(() => {
@@ -183,36 +181,57 @@ export default function FullCalander() {
     return Math.floor(diffInDays / 7) + 2;
 };
 
+const formatDate = (dateObj: Date) => {
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(dateObj.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+};
+
     const seteventData = (info: any) => {
-        try{      
-        const eventDate = info.view?.getCurrentData().currentDate
-        if (info.view.type == 'multiMonthYear') {
-            fetchData({ year: eventDate.getFullYear() })
+        let edte = info.end;
+        edte.setDate(info.end.getDate() - 1)
+        let startDte = formatDate(info.start);
+        let endDte = formatDate(edte)
 
-        } else if (info.view.type == 'dayGridMonth') {
+        try {
             fetchData({
-                year: eventDate.getFullYear(),
-                month: eventDate.getMonth() + 1,
+                fromDate: startDte,
+                toDate: endDte
             })
-        } else if (info.view.type == 'timeGridWeek') {
+            setCurrentView(info.view.type)
 
-            fetchData({
-                year: eventDate.getFullYear(),
-                month: eventDate.getMonth() + 1,
-                week: getWeekNumber(eventDate),
-            })
-        } else if (info.view.type == 'timeGridDay') {
-            fetchData({
-                year: info.start.getFullYear(),
-                month: info.start.getMonth() + 1,
-                day: info.start.getDate()
-            })
+            // const eventDate = info.view?.getCurrentData().currentDate
+            // if (info.view.type == 'multiMonthYear') {
+            //     fetchData({ year: eventDate.getFullYear() })
+
+            // } else if (info.view.type == 'dayGridMonth') {
+            //     fetchData({
+            //         // year: eventDate.getFullYear(),
+            //         // month: eventDate.getMonth() + 1,
+            //         fromDate:startDte,
+            //         toDate:endDte
+            //     })
+            // } else if (info.view.type == 'timeGridWeek') {
+
+            //     fetchData({
+            //         // year: eventDate.getFullYear(),
+            //         // month: eventDate.getMonth() + 1,
+            //         // week: getWeekNumber(eventDate),
+            //         fromDate:startDte,
+            //         toDate:endDte
+            //     })
+            // } else if (info.view.type == 'timeGridDay') {
+            //     fetchData({
+            //         fromDate:startDte,
+            //         toDate:endDte
+            //     })
+            // }
+
+        } catch (err) {
+            console.log("catched the error", err);
         }
-        setCurrentView(info.view.type)
-    } catch (err){
-        console.log("catched the error",err);
-        
-    }
     }
 
     const headerContent = (args: any) => {
