@@ -9,7 +9,7 @@ export default function Event({ eventInfo, onClick, keyId }: any) {
     return (
         <>
          <div key={keyId} className="horSepertr" style={{}}></div>
-         <div onClick={()=>onClick(eventInfo)} style={{background:activePopup.id == eventInfo.id ?'#d4effd':'#fff'}} className="bg-white rounded-md  popupCont">
+         <div onClick={()=>onClick(eventInfo)} style={{background:activePopup.id == eventInfo.id ?'#d4effd':'#fff',cursor:'pointer'}} className="bg-white rounded-md  popupCont">
                 <div className="fbcSB smallFontPaddX">
                     <p className="">{eventInfo?.job_id?.jobRequest_Title}</p>
                     <hr className="mx-1 border-yellow-400" />

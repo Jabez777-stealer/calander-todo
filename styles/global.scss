@@ -2,6 +2,7 @@
 
 $primary-color: #0070f3;
 $light-border:#e1e1e1;
+$primary-backround:#0070f324;
 
 $std-boxshaddow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 
@@ -63,13 +64,13 @@ button.fc-todayDate-button.fc-button.fc-button-primary {
         width: 8px; 
     }
 *::-webkit-scrollbar-track {
-    background: #fff; /* Track background */
-    border-radius: 0px; /* Rounded corners */
+    background: #fff;
+    border-radius: 0px; 
 }
 *::-webkit-scrollbar-thumb {
-    background: $primary-color; /* Scrollbar color */
-    border-radius: 10px; /* Rounded edges */
-    border: 2px solid #ffffff; /* Adds padding effect */
+    background: $primary-color;
+    border-radius: 10px; 
+    border: 2px solid #ffffff; 
 }
 
 
@@ -117,7 +118,7 @@ $primary-color: #0070f3;
 }
 
 .fc-v-event {
-    background-color: #fff !important;
+    background-color: $primary-backround !important;
     border: none !important;
     display: block;
 }
@@ -132,11 +133,9 @@ $primary-color: #0070f3;
 .eventCardCont {
     background: rgb(254, 254, 254);
     height: 'auto';
-    width: 98%;
+    width: 100%;
     position: relative; 
     padding-left: 18px;
-    min-width: 180px;
-    max-width: 180;
     box-shadow: $std-boxshaddow;
     // overflow: hidden;
     // z-index: 444356 !important;
@@ -168,6 +167,15 @@ $primary-color: #0070f3;
       }
   }
 
+  .fc-v-event .fc-event-main{
+
+  }
   
 
-  
+  .text-box {
+    white-space: nowrap;      /* Prevents text from wrapping */
+    overflow: hidden;         /* Hides overflowing text */
+    text-overflow: ellipsis;  /* Adds '...' when text overflows */
+    width: 100%;              /* Adjust based on your layout */
+    display: block;           /* Ensure it's a block element */
+}
