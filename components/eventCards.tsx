@@ -20,7 +20,7 @@ export default function EventCard(props: any) {
       const observer = new ResizeObserver(() => {
         if (eventCardRef.current) {
           const width = eventCardRef.current.offsetWidth;
-          setShowTooltip(width < 180);
+          setShowTooltip(width < 130);
         }
       });
   
